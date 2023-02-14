@@ -22,7 +22,7 @@ export class UserService {
       },
     });
 
-    return result;
+    return plainToInstance(UserResponse, result);
   }
 
   public async findOne(id: string): Promise<UserResponse> {
@@ -50,7 +50,7 @@ export class UserService {
       where: {
         id,
       },
-      data: input,
+      data: { ...input },
     });
 
     return plainToInstance(UserResponse, result);
