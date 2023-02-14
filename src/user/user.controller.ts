@@ -12,7 +12,6 @@ import {
 import { CreateUserDto, UpdateUserDto, UserResponse } from './dto';
 import { UserService } from './user.service';
 
-
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -39,7 +38,7 @@ export class UserController {
   }
 
   @Patch(':id')
-  public async update(@Param('id') id: string, input: UpdateUserDto) {
+  public async update(@Param('id') id: string, @Body() input: UpdateUserDto) {
     return await this.userService.update(id, input);
   }
 }

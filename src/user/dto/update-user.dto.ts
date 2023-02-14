@@ -5,18 +5,22 @@ import {
   Length,
   IsEmail,
   IsObject,
+  IsOptional,
 } from 'class-validator';
 
 export class UpdateUserDto {
   @IsNotEmpty()
   @IsString()
   @Length(3, 150)
+  @IsOptional()
   name?: string;
 
   @IsEmail()
   @IsString()
+  @IsOptional()
   email?: string;
 
   @IsObject()
+  @IsOptional()
   address?: Address;
 }
