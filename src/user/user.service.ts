@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { plainToInstance } from 'class-transformer';
 import { PrismaService } from 'src/prisma';
 import { CreateUserDto, UpdateUserDto, UserResponse } from './dto';
@@ -6,6 +7,10 @@ import { CreateUserDto, UpdateUserDto, UserResponse } from './dto';
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
+
+  public async count(options?: Prisma.UserCountArgs): Promise<Number> {
+    return await this.prisma.user.count(options);
+  }
 
   public async create(input: CreateUserDto): Promise<UserResponse> {
     const result = await this.prisma.user.create({
