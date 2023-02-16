@@ -33,7 +33,7 @@ export class PostController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  public async delete(@Param('id') id: string): Promise<Object> {
+  public async delete(@Param('id') id: string): Promise<object> {
     return await this.postService.delete(id);
   }
 

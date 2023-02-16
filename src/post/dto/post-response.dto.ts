@@ -6,13 +6,13 @@ export class PostResponseDto {
 
   @Expose()
   slug: string;
-  
+
   @Expose()
   title: string;
-  
+
   @Expose()
   body: string;
-  
+
   @Expose()
   authorId: string;
 }

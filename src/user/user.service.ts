@@ -35,7 +35,7 @@ export class UserService {
     return plainToInstance(UserResponse, result);
   }
 
-  public async delete(id: string): Promise<Object> {
+  public async delete(id: string): Promise<object> {
     await this.prisma.user.delete({
       where: {
         id: id,

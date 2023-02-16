@@ -35,7 +35,7 @@ export class PostService {
     return plainToInstance(PostResponseDto, result);
   }
 
-  public async delete(id: string): Promise<Object> {
+  public async delete(id: string): Promise<object> {
     await this.prisma.post.delete({
       where: {
         id,
