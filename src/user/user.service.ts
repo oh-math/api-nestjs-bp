@@ -8,7 +8,7 @@ import { CreateUserDto, UpdateUserDto, UserResponse } from './dto';
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  public async count(options?: Prisma.UserCountArgs): Promise<Number> {
+  public async count(options?: Prisma.UserCountArgs): Promise<number> {
     return await this.prisma.user.count(options);
   }
 
