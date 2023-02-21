@@ -8,14 +8,17 @@ import {
   Param,
   Patch,
   Post,
+  UsePipes,
 } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto, UserResponse } from './dto';
+import { CountNamePipe } from './pipe';
 import { UserService } from './user.service';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @UsePipes(CountNamePipe)
   @Post()
   public async create(@Body() input: CreateUserDto) {
     return await this.userService.create(input);
