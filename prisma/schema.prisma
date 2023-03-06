@@ -15,7 +15,7 @@ model Post {
   slug     String @unique
   title    String
   body     String
-  author   User   @relation(fields: [authorId], references: [id])
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId String @db.ObjectId
 }
 
