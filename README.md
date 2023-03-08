@@ -1,6 +1,6 @@
 # Getting started
 
-Attention: insert all commands line in **/API-NESTJS-BP** path
+**Attention**: insert all commands line in **/API-NESTJS-BP** path in your terminal
 
 ## Initialization
 
@@ -10,7 +10,7 @@ Attention: insert all commands line in **/API-NESTJS-BP** path
 
 `2. Create a cluster in MongoDB Atlas`
 
-insert URI cluster in your environment in the `.env.example` file. The field is **DATABASE_URL**
+insert URI of created cluster in your environment in the `.env.example` file. The field is **DATABASE_URL**
 
 `3. Generate taloired schema`
 
@@ -52,9 +52,9 @@ Login using the password and user created in last step
 curl -X POST http://localhost:3000/api/auth/login -H 'Content-Type: application/json' -d '{"email": "marcos@email.com", "password": "1234"}'
 ```
 
-`3. Use the generated token`
+`3. Test in a protected route`
 
-Test in a protected route
+Use the generated token
 
 ```bash
  curl -X GET http://localhost:3000/posts -H 'Content-Type: application/json' -H "Authorization: Bearer {token}"
