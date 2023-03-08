@@ -24,9 +24,7 @@ export class AuthService {
     email: string,
     password: string,
   ): Promise<User | null> {
-    let user: User | null;
-
-    user = await this.userService.findUnique({
+    const user = await this.userService.findUnique({
       where: {
         email,
       },
