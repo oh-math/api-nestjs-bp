@@ -5,6 +5,7 @@ import {
   Length,
   IsEmail,
   IsObject,
+  IsOptional,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -21,5 +22,7 @@ export class CreateUserDto {
   password: string;
 
   @IsObject()
+  @IsOptional()
   address: Address;
 }
+
