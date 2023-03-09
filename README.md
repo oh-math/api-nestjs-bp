@@ -14,7 +14,7 @@ insert URI of created cluster in your environment in the `.env.example` file. Th
 
 `3. Generate taloired schema`
 
-    npx prisma generate
+    pnpm prisma generate
 
 ---
 
