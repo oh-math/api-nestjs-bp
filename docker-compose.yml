@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  database:
+    image: mongo
+    container_name: nestjs-bp-mongo
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - database:/data/mongodb
+    ports:
+      - '27017:27017'
+volumes:
+  database:
