@@ -1,8 +1,6 @@
-import { Controller, Post, Request, UseGuards } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { PayloadJWT } from './types/payload.type';
 
 @Controller('api/auth')
 export class AuthController {
@@ -10,7 +8,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  public async login(@Request() req) {
-    return this.authService.login(req.user as User);
+  public async login(@Req() req) {
+    return this.authService.login(req.user);
   }
 }
