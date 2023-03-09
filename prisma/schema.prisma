@@ -10,22 +10,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Post {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  slug     String    @unique
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  slug     String @unique
   title    String
   body     String
-  author   User      @relation(fields: [authorId], references: [id])
-  authorId String    @db.ObjectId
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId String @db.ObjectId
 }
 
 model User {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  email   String   @unique
-  name    String?
-  address Address?
-  posts   Post[]
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  email    String   @unique
+  name     String?
+  password String
+  address  Address?
+  posts    Post[]
 }
 
 // Address is an embedded document
