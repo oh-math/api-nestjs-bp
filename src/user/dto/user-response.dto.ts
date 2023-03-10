@@ -3,13 +3,13 @@ import { Exclude, Expose } from 'class-transformer';
 
 export class UserResponse {
   @Expose()
-  id!: string;
+  id: string;
   @Expose()
-  email!: string;
+  email: string;
   @Expose()
-  name!: string;
+  name: string;
   @Exclude()
-  password!: string;
+  password: string;
   @Expose()
-  address!: Address;
+  address: Address;
 }

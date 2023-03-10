@@ -8,7 +8,7 @@ import { AuthService } from '../auth.service';
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly authService: AuthService) {
     // Customized strategy behavior. This specific strategy
-    // tell passport to expect propertie 'email' coming from body
+    // tell passport to expect property 'email' coming from body
     super({ usernameField: 'email' });
   }
 
