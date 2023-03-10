@@ -6,13 +6,24 @@
 
 `1. Install dependencies`
 
+```bash
     pnpm install
 
-`2. Create a cluster in MongoDB Atlas`
+    # copy the `.env.example` to an `.env` file
+    cp .env.example .env
 
-insert URI of created cluster in your environment in the `.env.example` file. The field is **DATABASE_URL**
+```
 
-`3. Generate taloired schema`
+`2. Create a container in Docker`
+
+```bash
+# To create a container and scaffold it in the bg process
+docker-compose up -d
+```
+
+insert URI of created container in your environment in the `.env` file. The field is **DATABASE_URL**
+
+`3. Generate tailored schema`
 
     pnpm prisma generate
 
@@ -28,7 +39,7 @@ Create a hash to be your JWT public key
 
 `2. Use the created hash`
 
-insert the created hash in **JWT_SECRET_KEY** field on `env.example` file
+insert the created hash in **JWT_SECRET_KEY** field on `env` file
 
 `3. Start the application`
 
@@ -61,5 +72,3 @@ Use the generated token
 ```
 
 If you prefer, download and use the insomnia specific collection located in **collection folder**
-
-
