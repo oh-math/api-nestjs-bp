@@ -10,10 +10,10 @@ export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   public async count(options: Prisma.UserCountArgs): Promise<number> {
-    return await this.prisma.user.count(options);
+    return this.prisma.user.count(options);
   }
 
-  public async create(input: CreateUserDto): Promise<UserResponse> {
+  public async create(input: CreateUserDto) {
     input.password = hashSync(input.password, 16);
 
     const result = await this.prisma.user.create({
@@ -43,8 +43,10 @@ export class UserService {
     return plainToInstance(UserResponse, result);
   }
 
-  public async findUnique(options: Prisma.UserFindUniqueArgs): Promise<User> {
-    return await this.prisma.user.findUnique(options);
+  public async findUnique(
+    options: Prisma.UserFindUniqueOrThrowArgs,
+  ): Promise<User> {
+    return this.prisma.user.findUniqueOrThrow(options);
   }
 
   public async delete(id: string): Promise<object> {
@@ -57,7 +59,7 @@ export class UserService {
     return { id };
   }
 
-  public async update(id: string, input: UpdateUserDto): Promise<UserResponse> {
+  public async update(id: string, input: UpdateUserDto) {
     const result = await this.prisma.user.update({
       where: {
         id,
