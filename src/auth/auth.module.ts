@@ -19,7 +19,13 @@ import { LocalStrategy } from './strategies/local.strategy';
       signOptions: { expiresIn: '15min' },
     }),
   ],
-  providers: [AuthService, LocalStrategy, UserService, PrismaService, JwtStrategy],
-  controllers: [AuthController]
+  providers: [
+    AuthService,
+    LocalStrategy,
+    UserService,
+    PrismaService,
+    JwtStrategy,
+  ],
+  controllers: [AuthController],
 })
 export class AuthModule {}

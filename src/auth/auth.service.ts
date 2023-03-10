@@ -32,7 +32,7 @@ export class AuthService {
 
     // validating passed password with  database password
     const isPasswordValid = compareSync(password, user.password);
-    
+
     if (!isPasswordValid) return null;
 
     return user;

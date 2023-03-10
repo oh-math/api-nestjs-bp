@@ -12,17 +12,16 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   @Length(3, 150)
-  name: string;
+  name!: string;
 
   @IsEmail()
   @IsString()
-  email: string;
+  email!: string;
 
   @IsString()
-  password: string;
+  password!: string;
 
   @IsObject()
   @IsOptional()
-  address: Address;
+  address!: Address;
 }
-
