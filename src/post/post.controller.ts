@@ -9,9 +9,11 @@ import {
   Patch,
   Post,
   UseGuards,
+  UsePipes,
 } from '@nestjs/common';
 import { CreatePostDto, PostResponseDto, UpdatePostDto } from './dto';
 import { JWTAuthGuard } from './guards/jwt-auth.guard';
+import { CountExistingUserPipe } from './pipe';
 import { PostService } from './post.service';
 
 @Controller('posts')
@@ -19,6 +21,7 @@ import { PostService } from './post.service';
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
+  @UsePipes(CountExistingUserPipe)
   @Post()
   public async create(@Body() input: CreatePostDto): Promise<PostResponseDto> {
     return await this.postService.create(input);
