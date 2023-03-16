@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { PrismaService } from 'src/prisma';
+import { PrismaService } from '../prisma/prisma-service';
 import { PostResponseDto, UpdatePostDto } from './dto';
 import { CreatePostDto } from './dto/create-post.dto';
 
