@@ -1,10 +1,11 @@
-import { faker } from '@faker-js/faker';
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Address } from '@prisma/client';
 import { AppModule } from 'src/app/app.module';
 import { UserModule } from 'src/user';
+import { CreateUserDto } from 'src/user/dto';
 import * as request from 'supertest';
+import { createUserFake, email } from 'test/helper/create-user-stub';
 
 interface UserComingRequest {
   body: {
@@ -29,29 +30,22 @@ describe('UserController (e2e)', () => {
   });
 
   describe('User CRUD ', () => {
-    let fistName: string;
-    let email: string;
+    const userEmail: string = email;
+    
     let user: UserComingRequest;
-    let body: object;
+    let data: CreateUserDto;
 
     beforeAll(() => {
-      fistName = faker.name.firstName();
-      email = faker.internet.email(fistName);
-
-      body = {
-        name: faker.name.fullName({ firstName: fistName }),
-        email,
-        password: faker.internet.password(20, true),
-      };
+      data = createUserFake({ email: userEmail });
     });
 
     it('(POST) Should create User', async () => {
-      await request(app.getHttpServer()).post('/users').send(body).expect(201);
+      await request(app.getHttpServer()).post('/users').send(data).expect(201);
     });
 
     it('(GET) should get User', async () => {
       user = await request(app.getHttpServer())
-        .get(`/users/byIdOrEmail/${email}`)
+        .get(`/users/byIdOrEmail/${userEmail}`)
         .expect(200);
 
       expect(user.body).toMatchObject(
