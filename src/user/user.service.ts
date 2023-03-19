@@ -34,11 +34,7 @@ export class UserService {
   }
 
   public async findOne(id: string): Promise<UserResponse> {
-    const result = await this.prisma.user.findUnique({
-      where: {
-        id: id,
-      },
-    });
+    const result = await this.prisma.user.findUnique({ where: { id } });
 
     return plainToInstance(UserResponse, result);
   }

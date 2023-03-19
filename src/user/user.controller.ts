@@ -34,6 +34,11 @@ export class UserController {
     return await this.userService.findOne(id);
   }
 
+  @Get('email/:email')
+  public async findByEmail(@Param('email') email: string) {
+    return await this.userService.findUnique({ where: { email } });
+  }
+
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   public async delete(@Param('id') id: string): Promise<object> {
