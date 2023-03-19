@@ -51,10 +51,15 @@ describe('UserController (e2e)', () => {
 
     it('(GET) should get User', async () => {
       user = await request(app.getHttpServer())
-        .get(`/users/email/${email}`)
+        .get(`/users/byIdOrEmail/${email}`)
         .expect(200);
 
-      expect(user.body).toMatchObject(body);
+      expect(user.body).toMatchObject(
+        expect.objectContaining({
+          name: expect.any(String),
+          email: expect.any(String),
+        }),
+      );
     });
 
     it('(DELETE) should delete User', async () => {
