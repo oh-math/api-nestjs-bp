@@ -1,21 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Address } from '@prisma/client';
 import { AppModule } from 'src/app/app.module';
 import { UserModule } from 'src/user';
 import { CreateUserDto } from 'src/user/dto';
 import * as request from 'supertest';
 import { createUserFake, email } from 'test/helper/create-user-stub';
-
-interface UserComingRequest {
-  body: {
-    id?: number;
-    name: string;
-    email: string;
-    password: string;
-    address?: Address;
-  };
-}
+import { UserResponseReturned } from 'test/helper/types/user-response.type';
 
 describe('UserController (e2e)', () => {
   let app: INestApplication;
@@ -31,8 +21,8 @@ describe('UserController (e2e)', () => {
 
   describe('User CRUD ', () => {
     const userEmail: string = email;
-    
-    let user: UserComingRequest;
+
+    let user: UserResponseReturned;
     let data: CreateUserDto;
 
     beforeAll(() => {
