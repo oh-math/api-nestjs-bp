@@ -23,5 +23,5 @@ export class CreateUserDto {
 
   @IsObject()
   @IsOptional()
-  address: Address;
+  address?: Address;
 }

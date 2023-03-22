@@ -8,7 +8,7 @@ import {
   Param,
   Patch,
   Post,
-  UsePipes,
+  UsePipes
 } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto, UserResponse } from './dto';
 import { CountNamePipe } from './pipe';
@@ -29,9 +29,9 @@ export class UserController {
     return await this.userService.findAll();
   }
 
-  @Get(':id')
-  public async findOne(@Param('id') id: string): Promise<UserResponse> {
-    return await this.userService.findOne(id);
+  @Get('byIdOrEmail/:input')
+  public async findByIdOrEmail(@Param('input') input: string) {
+    return await this.userService.findByIdOrEmail(input);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
