@@ -6,11 +6,17 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseFilePipeBuilder,
   Patch,
   Post,
+  Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
   UsePipes,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Request } from 'express';
 import { CreatePostDto, PostResponseDto, UpdatePostDto } from './dto';
 import { JWTAuthGuard } from './guards/jwt-auth.guard';
 import { CountExistingUserPipe } from './pipe';
@@ -39,8 +45,8 @@ export class PostController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  public async delete(@Param('id') id: string): Promise<object> {
-    return await this.postService.delete(id);
+  public async delete(@Param('id') id: string) {
+    await this.postService.delete(id);
   }
 
   @Patch(':id')
@@ -49,5 +55,23 @@ export class PostController {
     @Body() input: UpdatePostDto,
   ): Promise<PostResponseDto> {
     return await this.postService.update(id, input);
+  }
+
+  @Post(':id/upload')
+  @UseInterceptors(FileInterceptor('file'))
+  public async uploadFile(
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({ fileType: 'jpeg' })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    file: Express.Multer.File,
+    @Param('id') id: string,
+    @Req() req: Request,
+  ) {
+    const { email } = req.user;
+    return await this.postService.addFileToPost(file, id, email);
   }
 }
