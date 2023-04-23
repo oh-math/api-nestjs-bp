@@ -1,12 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { PrismaService } from '../prisma/prisma-service';
-import { PostResponseDto, UpdatePostDto } from './dto';
-import { CreatePostDto } from './dto/create-post.dto';
+import { CreatePostDto, PostResponseDto, UpdatePostDto } from './dto';
+import { S3Service } from 'src/s3';
+import { PrismaService } from 'src/prisma';
+import { formattedTodaysDate } from 'src/helper/date';
 
 @Injectable()
 export class PostService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly S3Service: S3Service,
+  ) {}
 
   public async create(input: CreatePostDto): Promise<PostResponseDto> {
     const result = await this.prisma.post.create({
@@ -15,7 +19,6 @@ export class PostService {
         ...input,
       },
     });
-
     return plainToInstance(PostResponseDto, result);
   }
 
@@ -35,14 +38,12 @@ export class PostService {
     return plainToInstance(PostResponseDto, result);
   }
 
-  public async delete(id: string): Promise<object> {
+  public async delete(id: string) {
     await this.prisma.post.delete({
       where: {
         id,
       },
     });
-
-    return { id };
   }
 
   public async update(
@@ -57,5 +58,35 @@ export class PostService {
     });
 
     return plainToInstance(PostResponseDto, result);
+  }
+
+  public async addFileToPost(
+    file: Express.Multer.File,
+    id: string,
+    email: string,
+  ) {
+    const post = await this.prisma.post.findFirstOrThrow({
+      where: {
+        id,
+      },
+      include: {
+        author: true,
+      },
+    });
+
+    if (post.author.email !== email)
+      throw new HttpException('You cannot update post', 400);
+
+    const key = `${file.fieldname}${formattedTodaysDate}`;
+    const imageURL = await this.S3Service.uploadFile(file, key);
+
+    await this.prisma.post.update({
+      where: {
+        id,
+      },
+      data: {
+        image: imageURL,
+      },
+    });
   }
 }

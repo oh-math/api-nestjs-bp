@@ -53,14 +53,12 @@ export class UserService {
     return this.prisma.user.findUniqueOrThrow(options);
   }
 
-  public async delete(id: string): Promise<object> {
+  public async delete(id: string) {
     await this.prisma.user.delete({
       where: {
         id: id,
       },
     });
-
-    return { id };
   }
 
   public async update(id: string, input: UpdateUserDto) {
