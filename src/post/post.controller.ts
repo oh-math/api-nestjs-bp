@@ -21,6 +21,7 @@ import { CreatePostDto, PostResponseDto, UpdatePostDto } from './dto';
 import { JWTAuthGuard } from './guards/jwt-auth.guard';
 import { CountExistingUserPipe } from './pipe';
 import { PostService } from './post.service';
+import { fileValidators } from './pipe/file.pipe';
 
 @Controller('posts')
 @UseGuards(JWTAuthGuard)
@@ -60,13 +61,7 @@ export class PostController {
   @Post(':id/upload')
   @UseInterceptors(FileInterceptor('file'))
   public async uploadFile(
-    @UploadedFile(
-      new ParseFilePipeBuilder()
-        .addFileTypeValidator({ fileType: 'jpeg' })
-        .build({
-          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-        }),
-    )
+    @UploadedFile(fileValidators)
     file: Express.Multer.File,
     @Param('id') id: string,
     @Req() req: Request,
