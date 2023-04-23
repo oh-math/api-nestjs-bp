@@ -6,7 +6,7 @@ import {
 } from '@aws-sdk/client-s3';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ACESS_KEY_ID, SECRET_ACESS_KEY } from 'src/helper/s3.env';
+import { ACESS_KEY_ID, SECRET_ACESS_KEY } from 'src/helper';
 
 @Injectable()
 export class S3Service {
@@ -34,14 +34,14 @@ export class S3Service {
       ContentType: file.mimetype,
       ACL: 'public-read',
     };
+    const putObject = new PutObjectCommand(input);
 
     try {
-      const response: PutObjectCommandOutput = await this.s3.send(
-        new PutObjectCommand(input),
-      );
-      if (response.$metadata.httpStatusCode === 200) {
+      const response: PutObjectCommandOutput = await this.s3.send(putObject);
+
+      if (response.$metadata.httpStatusCode === 200)
         return `https://${bucket}.s3.${this.region}.amazonaws.com/${key}`;
-      }
+
       throw new Error('Image not saved to S3!');
     } catch (err) {
       this.logger.error(`Cannot save file inside s3`, err);
