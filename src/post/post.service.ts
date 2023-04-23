@@ -1,10 +1,9 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { PrismaService } from '../prisma/prisma-service';
-import { PostResponseDto, UpdatePostDto } from './dto';
-import { CreatePostDto } from './dto/create-post.dto';
-import { S3Service } from 'src/s3/s3.service';
-import { Post } from '@prisma/client';
+import { CreatePostDto, PostResponseDto, UpdatePostDto } from './dto';
+import { S3Service } from 'src/s3';
+import { PrismaService } from 'src/prisma';
+import { formattedTodaysDate } from 'src/helper/date';
 
 @Injectable()
 export class PostService {
@@ -75,11 +74,10 @@ export class PostService {
       },
     });
 
-    if (post.author.email !== email) {
+    if (post.author.email !== email)
       throw new HttpException('You cannot update post', 400);
-    }
 
-    const key = `${file.fieldname}${Date.now()}`;
+    const key = `${file.fieldname}${formattedTodaysDate}`;
     const imageURL = await this.S3Service.uploadFile(file, key);
 
     await this.prisma.post.update({
