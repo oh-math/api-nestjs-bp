@@ -6,26 +6,32 @@ import {
 } from '@aws-sdk/client-s3';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ACESS_KEY_ID, SECRET_ACESS_KEY } from 'src/helper';
+import { config } from 'src/config';
 
 @Injectable()
 export class S3Service {
-  private logger = new Logger(S3Client.name);
-  private region: string;
-  private s3: S3Client;
+  private readonly logger = new Logger(S3Client.name);
+  private readonly region: string;
+  private readonly s3: S3Client;
 
   constructor(private configService: ConfigService) {
-    this.region = this.configService.get<string>('S3_REGION') || 'sa-east-1';
+    const secretAccessKey = config.S3_SECRET_ACCESS_KEY;
+    const accessKeyId = config.S3_ACCESS_KEY_ID;
+
+    this.region = config.S3_REGION;
     this.s3 = new S3Client({
       region: this.region,
       credentials: {
-        secretAccessKey: SECRET_ACESS_KEY,
-        accessKeyId: ACESS_KEY_ID,
+        secretAccessKey,
+        accessKeyId,
       },
     });
   }
 
-  async uploadFile(file: Express.Multer.File, key: string) {
+  async uploadFile(
+    file: Express.Multer.File,
+    key: string,
+  ): Promise<S3UploadResponse> {
     const bucket = this.configService.get<string>('S3_BUCKET');
     const input: PutObjectCommandInput = {
       Body: file.buffer,
@@ -40,7 +46,9 @@ export class S3Service {
       const response: PutObjectCommandOutput = await this.s3.send(putObject);
 
       if (response.$metadata.httpStatusCode === 200)
-        return `https://${bucket}.s3.${this.region}.amazonaws.com/${key}`;
+        return {
+          url: `https://${bucket}.s3.${this.region}.amazonaws.com/${key}`,
+        };
 
       throw new Error('Image not saved to S3!');
     } catch (err) {
