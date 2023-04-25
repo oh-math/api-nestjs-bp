@@ -65,6 +65,7 @@ export class PostService {
     id: string,
     email: string,
   ) {
+    // pass to a pipe in future
     const post = await this.prisma.post.findFirstOrThrow({
       where: {
         id,
@@ -78,14 +79,14 @@ export class PostService {
       throw new HttpException('You cannot update post', 400);
 
     const key = `${file.fieldname}${formattedTodaysDate}`;
-    const imageURL = await this.S3Service.uploadFile(file, key);
+    const { url } = await this.S3Service.uploadFile(file, key);
 
     await this.prisma.post.update({
       where: {
         id,
       },
       data: {
-        image: imageURL,
+        image: url,
       },
     });
   }
