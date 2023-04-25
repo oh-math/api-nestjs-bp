@@ -1,11 +1,11 @@
 import { faker } from '@faker-js/faker';
 import { CreateUserDto } from 'src/user/dto';
 
-export const fistName: string = faker.name.firstName();
-export const email: string = faker.internet.email(fistName);
-export const password: string = faker.internet.password(20, true);
+const fistName: string = faker.name.firstName();
+const email: string = faker.internet.email(fistName);
+const password: string = faker.internet.password(20, true);
 
-export function createUserFake(fields?: Partial<CreateUserDto>): CreateUserDto {
+function createUserFake(fields?: Partial<CreateUserDto>): CreateUserDto {
   return {
     name: faker.name.fullName({ firstName: fistName }),
     email,
@@ -14,3 +14,5 @@ export function createUserFake(fields?: Partial<CreateUserDto>): CreateUserDto {
     ...fields,
   };
 }
+
+export { createUserFake, fistName, email, password };
