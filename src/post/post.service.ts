@@ -3,7 +3,7 @@ import { plainToInstance } from 'class-transformer';
 import { CreatePostDto, PostResponseDto, UpdatePostDto } from './dto';
 import { S3Service } from 'src/s3';
 import { PrismaService } from 'src/prisma';
-import { formattedTodaysDate } from 'src/helper/date';
+import { formatDate } from 'src/helper/date';
 
 @Injectable()
 export class PostService {
@@ -78,7 +78,7 @@ export class PostService {
     if (post.author.email !== email)
       throw new HttpException('You cannot update post', 400);
 
-    const key = `${file.fieldname}${formattedTodaysDate}`;
+    const key = `${file.fieldname}${formatDate(new Date())}`;
     const { url } = await this.S3Service.uploadFile(file, key);
 
     await this.prisma.post.update({
