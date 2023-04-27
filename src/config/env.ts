@@ -1,9 +1,6 @@
-import { Logger } from '@nestjs/common';
 import { config as dotEnvConfig } from 'dotenv';
 import { z } from 'zod';
 
-const ERROR_MESSAGE = `Invalid environments variables`;
-const logger = new Logger();
 
 if (process.env.NODE_ENV === 'test') {
   dotEnvConfig({ path: '.env.test' });
@@ -31,8 +28,11 @@ const envSchema = z.object({
 const _env = envSchema.safeParse(process.env);
 
 if (!_env.success) {
-  logger.error(ERROR_MESSAGE);
-  throw new Error(ERROR_MESSAGE);
+  console.error(
+    '❌ Invalid environment variables:',
+    JSON.stringify(_env.error.format(), null, 4),
+  );
+  process.exit(1);
 }
 
 export const config = _env.data;
