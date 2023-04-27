@@ -25,14 +25,14 @@ const envSchema = z.object({
   JWT_SECRET_KEY: z.string(),
 });
 
-const _env = envSchema.safeParse(process.env);
+const env = envSchema.safeParse(process.env);
 
-if (!_env.success) {
+if (!env.success) {
   console.error(
     '❌ Invalid environment variables:',
-    JSON.stringify(_env.error.format(), null, 4),
+    JSON.stringify(env.error.format(), null, 4),
   );
   process.exit(1);
 }
 
-export const config = _env.data;
+export const config = env.data;
