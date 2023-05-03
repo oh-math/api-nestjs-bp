@@ -5,7 +5,6 @@ import {
   S3Client,
 } from '@aws-sdk/client-s3';
 import { Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { config } from 'src/config';
 
 @Injectable()
@@ -14,7 +13,7 @@ export class S3Service {
   private readonly region: string;
   private readonly s3: S3Client;
 
-  constructor(private configService: ConfigService) {
+  constructor() {
     const secretAccessKey = config.S3_SECRET_ACCESS_KEY;
     const accessKeyId = config.S3_ACCESS_KEY_ID;
 
@@ -32,7 +31,8 @@ export class S3Service {
     file: Express.Multer.File,
     key: string,
   ): Promise<S3UploadResponse> {
-    const bucket = this.configService.get<string>('S3_BUCKET');
+    const bucket = config.S3_BUCKET;
+    
     const input: PutObjectCommandInput = {
       Body: file.buffer,
       Bucket: bucket,
