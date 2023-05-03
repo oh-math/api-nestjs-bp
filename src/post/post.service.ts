@@ -4,6 +4,7 @@ import { formatDate } from 'src/helper/date';
 import { PrismaService } from 'src/prisma';
 import { S3Service } from 'src/s3';
 import { CreatePostDto, PostResponseDto, UpdatePostDto } from './dto';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class PostService {
@@ -61,7 +62,9 @@ export class PostService {
   }
 
   public async addFileToPost(file: Express.Multer.File, id: string) {
-    const key = `${formatDate(new Date())}_${file.originalname}`;
+    const fileExtension = file.originalname.split('.').pop();
+
+    const key = `${randomUUID()}-${formatDate(new Date())}.${fileExtension}`;
     const { url } = await this.S3Service.uploadFile(file, key);
 
     await this.prisma.post.update({
