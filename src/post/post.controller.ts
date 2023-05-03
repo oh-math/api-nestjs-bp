@@ -6,7 +6,6 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseFilePipeBuilder,
   Patch,
   Post,
   Req,
@@ -19,9 +18,12 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { Request } from 'express';
 import { CreatePostDto, PostResponseDto, UpdatePostDto } from './dto';
 import { JWTAuthGuard } from './guards/jwt-auth.guard';
-import { CountExistingUserPipe } from './pipe';
+import {
+  CountExistingUserPipe,
+  PostFromUserPipe,
+  fileValidators,
+} from './pipe';
 import { PostService } from './post.service';
-import { fileValidators } from './pipe/file.pipe';
 
 @Controller('posts')
 @UseGuards(JWTAuthGuard)
@@ -59,6 +61,7 @@ export class PostController {
   }
 
   @Post(':id/upload')
+  @UsePipes(PostFromUserPipe)
   @UseInterceptors(FileInterceptor('file'))
   public async uploadFile(
     @UploadedFile(fileValidators)
@@ -66,7 +69,6 @@ export class PostController {
     @Param('id') id: string,
     @Req() req: Request,
   ) {
-    const { email } = req.user;
-    return await this.postService.addFileToPost(file, id, email);
+    return await this.postService.addFileToPost(file, id);
   }
 }
