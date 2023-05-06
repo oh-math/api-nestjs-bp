@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 
 export class PostResponseDto {
   @Expose()
@@ -12,6 +12,10 @@ export class PostResponseDto {
 
   @Expose()
   body: string;
+
+  @Expose()
+  @Transform(() => 'ai')
+  image?: string | null;
 
   @Expose()
   authorId: string;
