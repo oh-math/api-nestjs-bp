@@ -1,9 +1,10 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { CreatePostDto, PostResponseDto, UpdatePostDto } from './dto';
-import { S3Service } from 'src/s3';
-import { PrismaService } from 'src/prisma';
 import { formatDate } from 'src/helper/date';
+import { PrismaService } from 'src/prisma';
+import { S3Service } from 'src/s3';
+import { CreatePostDto, PostResponseDto, UpdatePostDto } from './dto';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class PostService {
@@ -60,25 +61,10 @@ export class PostService {
     return plainToInstance(PostResponseDto, result);
   }
 
-  public async addFileToPost(
-    file: Express.Multer.File,
-    id: string,
-    email: string,
-  ) {
-    // pass to a pipe in future
-    const post = await this.prisma.post.findFirstOrThrow({
-      where: {
-        id,
-      },
-      include: {
-        author: true,
-      },
-    });
+  public async addFileToPost(file: Express.Multer.File, id: string) {
+    const fileExtension = file.originalname.split('.').pop();
 
-    if (post.author.email !== email)
-      throw new HttpException('You cannot update post', 400);
-
-    const key = `${file.fieldname}${formatDate(new Date())}`;
+    const key = `${randomUUID()}-${formatDate(new Date())}.${fileExtension}`;
     const { url } = await this.S3Service.uploadFile(file, key);
 
     await this.prisma.post.update({
