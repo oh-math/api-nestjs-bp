@@ -1,4 +1,3 @@
-import { Address } from '@prisma/client';
 import { Exclude, Expose } from 'class-transformer';
 
 export class UserResponse {
@@ -10,6 +9,4 @@ export class UserResponse {
   name: string;
   @Exclude()
   password: string;
-  @Expose()
-  address: Address;
 }

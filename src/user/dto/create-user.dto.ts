@@ -1,4 +1,3 @@
-import { Address } from '@prisma/client';
 import {
   IsNotEmpty,
   IsString,
@@ -20,8 +19,4 @@ export class CreateUserDto {
 
   @IsString()
   password: string;
-
-  @IsObject()
-  @IsOptional()
-  address?: Address;
 }
