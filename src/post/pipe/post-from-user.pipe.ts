@@ -25,7 +25,7 @@ export class PostFromUserPipe implements PipeTransform {
 
     const post = await this.prisma.post.findFirstOrThrow({
       where: {
-        id,
+        id: parseInt(id),
       },
       include: {
         author: true,

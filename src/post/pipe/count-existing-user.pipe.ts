@@ -17,7 +17,7 @@ export class CountExistingUserPipe implements PipeTransform {
 
     const userCount = await this.userService.count({
       where: {
-        id,
+        id: parseInt(id),
       },
     });
 
