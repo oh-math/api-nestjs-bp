@@ -12,9 +12,9 @@ const envSchema = z.object({
   // Local
   NODE_ENV: z.enum(['dev', 'test', 'prod']).default('dev'),
   PORT: z.coerce.number().default(3000),
-  MONGO_INITDB_ROOT_USERNAME: z.string(),
-  MONGO_INITDB_ROOT_PASSWORD: z.string(),
-  MONGO_INITDB_DATABASE: z.string(),
+  POSTGRES_USER: z.string(),
+  POSTGRES_PASSWORD: z.string(),
+  POSTGRES_DB: z.string(),
   DATABASE_URL: z.string(),
   // AWS
   S3_REGION: z.string().min(7).default('sa-east-1'),
