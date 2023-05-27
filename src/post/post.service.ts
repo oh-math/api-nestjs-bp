@@ -15,10 +15,9 @@ export class PostService {
 
   public async create(input: CreatePostDto): Promise<PostResponseDto> {
     const result = await this.prisma.post.create({
-      data: {
-        slug: 'posts',
+      data: { 
         ...input,
-      },
+        authorId: parseInt(input.authorId)},
     });
     return plainToInstance(PostResponseDto, result);
   }
@@ -32,7 +31,7 @@ export class PostService {
   public async findOne(id: string): Promise<PostResponseDto> {
     const result = await this.prisma.post.findUnique({
       where: {
-        id,
+        id: parseInt(id),
       },
     });
 
@@ -42,7 +41,7 @@ export class PostService {
   public async delete(id: string) {
     await this.prisma.post.delete({
       where: {
-        id,
+        id: parseInt(id),
       },
     });
   }
@@ -53,7 +52,7 @@ export class PostService {
   ): Promise<PostResponseDto> {
     const result = await this.prisma.post.update({
       where: {
-        id,
+        id: parseInt(id),
       },
       data: input,
     });
@@ -69,7 +68,7 @@ export class PostService {
 
     await this.prisma.post.update({
       where: {
-        id,
+        id: parseInt(id),
       },
       data: {
         image: url,

@@ -6,33 +6,23 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Post {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  slug     String @unique
+  id       Int  @id @default(autoincrement())
   title    String
   body     String
   image    String?
   author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId String @db.ObjectId
+  authorId Int
 }
 
 model User {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  id       Int   @id @default(autoincrement()) 
   email    String   @unique
   name     String?
   password String
-  address  Address?
   posts    Post[]
-}
-
-// Address is an embedded document
-type Address {
-  street String
-  city   String
-  state  String
-  zip    String
 }

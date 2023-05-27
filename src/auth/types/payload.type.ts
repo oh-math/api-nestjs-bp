@@ -1,4 +1,4 @@
 export type PayloadJWT = {
-  sub: string;
+  sub: number;
   email: string;
 };

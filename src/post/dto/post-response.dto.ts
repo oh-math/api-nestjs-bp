@@ -4,8 +4,6 @@ export class PostResponseDto {
   @Expose()
   id: string;
 
-  @Expose()
-  slug: string;
 
   @Expose()
   title: string;

@@ -1,4 +1,3 @@
-import { Address } from '@prisma/client';
 import {
   IsNotEmpty,
   IsString,
@@ -13,8 +12,4 @@ export class UpdateUserDto {
   @Length(3, 150)
   @IsOptional()
   name?: string;
-
-  @IsObject()
-  @IsOptional()
-  address?: Address;
 }

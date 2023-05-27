@@ -37,10 +37,7 @@ export class UserService {
   public async findByIdOrEmail(input: string): Promise<UserResponse> {
     const result = await this.prisma.user.findFirst({
       where: {
-        OR: [
-          { id: ObjectId.isValid(input) ? input : undefined },
-          { email: input },
-        ],
+        OR: [{ id: parseInt(input) }, { email: input }],
       },
     });
 
@@ -56,7 +53,7 @@ export class UserService {
   public async delete(id: string) {
     await this.prisma.user.delete({
       where: {
-        id: id,
+        id: parseInt(id),
       },
     });
   }
@@ -64,7 +61,7 @@ export class UserService {
   public async update(id: string, input: UpdateUserDto) {
     const result = await this.prisma.user.update({
       where: {
-        id,
+        id: parseInt(id),
       },
       data: { ...input },
     });
