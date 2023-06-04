@@ -17,5 +17,5 @@ export class CreatePostDto {
 
   @IsOptional()
   @IsString()
-  image?: string
+  image?: string | null
 }
