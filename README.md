@@ -1,6 +1,6 @@
 # Getting started
 
-**Attention**: insert all commands line in **/API-NESTJS-BP** path in your terminal
+**Attention**: insert all commands line in **/api-nestjs-bp** path in your terminal
 
 ## Initialization
 
@@ -14,6 +14,8 @@
 
 ```
 
+- Change the capitalize `.env` fields, especially the fields under the `#PostgreSQL database configs` comment
+
 `2. Create a container in Docker`
 
 ```bash
@@ -21,11 +23,17 @@
 docker-compose up -d
 ```
 
-insert URI of created container in your environment in the `.env` file. The field is **DATABASE_URL**
+or
 
-`3. Generate tailored schema`
+```bash
+docker compose up -d
+```
 
-    pnpm prisma generate
+
+
+`3. Generate prisma migration`
+
+    pnpm prisma migrate dev init
 
 ---
 
@@ -39,7 +47,7 @@ Create a hash to be your JWT public key
 
 `2. Use the created hash`
 
-insert the created hash in **JWT_SECRET_KEY** field on `env` file
+- insert the created hash in **JWT_SECRET_KEY** field on `.env` file
 
 `3. Start the application`
 
@@ -65,10 +73,14 @@ curl -X POST http://localhost:3000/api/auth/login -H 'Content-Type: application/
 
 `3. Test in a protected route`
 
-Use the generated token
+Use the generated token where is it the curly bracket
 
 ```bash
  curl -X GET http://localhost:3000/posts -H 'Content-Type: application/json' -H "Authorization: Bearer {token}"
 ```
 
-If you prefer, download and use the insomnia specific collection located in **collection folder**
+If everythihg is alright you should see a single square bracket: "[]"
+
+---
+
+If you prefer, download and use the insomnia specific collection located in **`/collection` folder**
