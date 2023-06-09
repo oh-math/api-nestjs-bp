@@ -5,6 +5,7 @@ import { PrismaService } from 'src/prisma';
 import { S3Service } from 'src/s3';
 import { CreatePostDto, PostResponseDto, UpdatePostDto } from './dto';
 import { randomUUID } from 'crypto';
+import { extname } from 'path';
 
 @Injectable()
 export class PostService {
@@ -15,9 +16,10 @@ export class PostService {
 
   public async create(input: CreatePostDto): Promise<PostResponseDto> {
     const result = await this.prisma.post.create({
-      data: { 
+      data: {
         ...input,
-        authorId: parseInt(input.authorId)},
+        authorId: parseInt(input.authorId),
+      },
     });
     return plainToInstance(PostResponseDto, result);
   }
@@ -61,9 +63,10 @@ export class PostService {
   }
 
   public async addFileToPost(file: Express.Multer.File, id: string) {
-    const fileExtension = file.originalname.split('.').pop();
+    const fileExtension = extname(file.originalname);
+    //  previous way: file.originalname.split('.').pop();
 
-    const key = `${randomUUID()}-${formatDate(new Date())}.${fileExtension}`;
+    const key = `${randomUUID()}-${formatDate(new Date())}${fileExtension}`;
     const { url } = await this.S3Service.uploadFile(file, key);
 
     await this.prisma.post.update({
