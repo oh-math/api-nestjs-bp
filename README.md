@@ -1,6 +1,16 @@
 # Getting started
+## Table of Contents
+- [Initialization] (#initialization)
+- [JWT Configurations] (#jwt-Configurations)
+- [Testing API] (#testing-api)
+- [S3] (#s3)
 
 **Attention**: insert all commands line in **/api-nestjs-bp** path in your terminal
+
+### What you will need to execute this project?
+- pnpm
+- Docker
+- NodeJS
 
 ## Initialization
 
@@ -14,12 +24,12 @@
 
 ```
 
-- Change the capitalize `.env` fields, especially the fields under the `#PostgreSQL database configs` comment
+- Change the capitalize `.env` fields, especially the fields under the `# PostgreSQL database configs` comment
 
-#### 2. Create a container in Docker
+#### 2. Create a container using Docker
 
 ```bash
-# To create a container and scaffold it in the bg process
+# To create a container and scaffold it in the background process
 docker-compose up -d
 ```
 
@@ -31,9 +41,9 @@ docker compose up -d
 
 
 
-#### 3. Generate prisma migration
+#### 3. Apply Prisma migration
 
-    pnpm prisma migrate dev init
+    pnpm prisma db push
 
 ---
 
@@ -47,7 +57,7 @@ Create a hash to be your JWT public key
 
 #### 2. Use the created hash
 
-- insert the created hash in **JWT_SECRET_KEY** field on `.env` file
+-  Insert the created hash in the **JWT_SECRET_KEY** field in the .env file.
 
 #### 3. Start the application
 
@@ -55,9 +65,10 @@ Create a hash to be your JWT public key
 
 ---
 
-### Testing API
+## Testing API
 
 #### 1. Create a user
+**Note:** the following name and email was generated automatically by **4devs**
 
 ```bash
 curl -X POST http://localhost:3000/users -H 'Content-Type: application/json' -d '{"name": "Marcos Felipe Ian Lopes", "email": "marcos@email.com", "password": "1234"}'
@@ -73,7 +84,7 @@ curl -X POST http://localhost:3000/api/auth/login -H 'Content-Type: application/
 
 #### 3. Test in a protected route
 
-Use the generated token where is it the curly bracket
+Insert the generated token where is it the curly braces (remove the curly braces)
 
 ```bash
  curl -X GET http://localhost:3000/posts -H 'Content-Type: application/json' -H "Authorization: Bearer {token}"
@@ -81,6 +92,9 @@ Use the generated token where is it the curly bracket
 
 If everythihg is alright you should see a single square bracket: "[]"
 
----
 
 If you prefer, download and use the insomnia specific collection located in **`/collection` folder**
+
+---
+## S3
+Note that the `.env.example` has some S3 environment variables, just replace them to start use with you own bucket 
