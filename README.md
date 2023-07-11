@@ -1,9 +1,22 @@
 # Getting started
+
+What is the purpose of this API? 
+
+This API serves as a simple NestJS boilerplate for both my personal reference and for others to use :)
+
+What concepts are covered in this API?
+
+- Implementation of routes
+- Authentication using Passport and JWT
+- File upload using Multer and S3
+- Usage of the Prisma ORM and its integration with NestJS
+- Handling the request lifecycle using Nest concepts such as Guards and Pipes
+
 ## Table of Contents
-- [Initialization] (#initialization)
-- [JWT Configurations] (#jwt-Configurations)
-- [Testing API] (#testing-api)
-- [S3] (#s3)
+1. [Initialization](#initialization)
+2. [JWT Configurations](#jwt-configurations)
+3. [Testing API](#testing-api)
+4. [S3](#s3)
 
 **Attention**: insert all commands line in **/api-nestjs-bp** path in your terminal
 
