@@ -110,4 +110,4 @@ If you prefer, download and use the insomnia specific collection located in **`/
 
 ---
 ## S3
-Note that the `.env.example` has some S3 environment variables, just replace them to start use with you own bucket 
+Note that the `.env.example` has some S3 environment variables, just replace them to start using with your own bucket 
