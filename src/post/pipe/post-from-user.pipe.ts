@@ -23,7 +23,7 @@ export class PostFromUserPipe implements PipeTransform {
     const { id } = this.req.params;
     const { email } = this.req.user;
 
-    const post = await this.prisma.post.findFirstOrThrow({
+    const post = await this.prisma.client.post.findFirstOrThrow({
       where: {
         id: parseInt(id),
       },

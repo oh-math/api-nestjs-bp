@@ -15,7 +15,7 @@ export class PostService {
   ) {}
 
   public async create(input: CreatePostDto): Promise<PostResponseDto> {
-    const result = await this.prisma.post.create({
+    const result = await this.prisma.client.post.create({
       data: {
         ...input,
         authorId: parseInt(input.authorId),
@@ -25,13 +25,13 @@ export class PostService {
   }
 
   public async findAll(): Promise<PostResponseDto[]> {
-    const result = await this.prisma.post.findMany();
+    const result = await this.prisma.client.post.findMany();
 
     return plainToInstance(PostResponseDto, result);
   }
 
   public async findOne(id: string): Promise<PostResponseDto> {
-    const result = await this.prisma.post.findUnique({
+    const result = await this.prisma.client.post.findUnique({
       where: {
         id: parseInt(id),
       },
@@ -41,7 +41,7 @@ export class PostService {
   }
 
   public async delete(id: string) {
-    await this.prisma.post.delete({
+    await this.prisma.client.post.delete({
       where: {
         id: parseInt(id),
       },
@@ -52,7 +52,7 @@ export class PostService {
     id: string,
     input: UpdatePostDto,
   ): Promise<PostResponseDto> {
-    const result = await this.prisma.post.update({
+    const result = await this.prisma.client.post.update({
       where: {
         id: parseInt(id),
       },
@@ -69,7 +69,7 @@ export class PostService {
     const key = `${randomUUID()}-${formatDate(new Date())}${fileExtension}`;
     const { url } = await this.S3Service.uploadFile(file, key);
 
-    await this.prisma.post.update({
+    await this.prisma.client.post.update({
       where: {
         id: parseInt(id),
       },
