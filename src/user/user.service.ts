@@ -1,70 +1,49 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, User } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { hashSync } from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
-import { PrismaService } from 'src/prisma';
 import { CreateUserDto, UpdateUserDto, UserResponse } from './dto';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   public async count(options: Prisma.UserCountArgs): Promise<number> {
-    return this.prisma.user.count(options);
+    return await this.userRepository.count(options);
   }
 
   public async create(input: CreateUserDto) {
     input.password = hashSync(input.password, 10);
 
-    const result = await this.prisma.user.create({
-      data: input,
-    });
+    const plainUser = await this.userRepository.create(input);
 
-    return plainToInstance(UserResponse, result);
+    return plainToInstance(UserResponse, plainUser);
   }
 
   public async findAll(): Promise<UserResponse[]> {
-    const result = await this.prisma.user.findMany({
-      include: {
-        posts: true,
-      },
-    });
+    const plainUser = await this.userRepository.findAll();
 
-    return plainToInstance(UserResponse, result);
+    return plainToInstance(UserResponse, plainUser);
   }
 
   public async findByIdOrEmail(input: string): Promise<UserResponse> {
-    const result = await this.prisma.user.findFirst({
+    const plainUser = await this.userRepository.findFirst({
       where: {
         OR: [{ id: parseInt(input) }, { email: input }],
       },
     });
 
-    return plainToInstance(UserResponse, result);
-  }
-
-  public async findUnique(
-    options: Prisma.UserFindUniqueOrThrowArgs,
-  ): Promise<User> {
-    return this.prisma.user.findUniqueOrThrow(options);
+    return plainToInstance(UserResponse, plainUser);
   }
 
   public async delete(id: string) {
-    await this.prisma.user.delete({
-      where: {
-        id: parseInt(id),
-      },
-    });
+    await this.userRepository.delete(id);
   }
 
   public async update(id: string, input: UpdateUserDto) {
-    const result = await this.prisma.user.update({
-      where: {
-        id: parseInt(id),
-      },
-      data: { ...input },
-    });
+    const plainUser = await this.userRepository.update(id, input);
 
-    return plainToInstance(UserResponse, result);
+    return plainToInstance(UserResponse, plainUser);
   }
 }

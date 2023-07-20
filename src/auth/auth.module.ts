@@ -2,13 +2,15 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { PrismaClient } from '@prisma/client';
+import { config } from 'src/config';
 import { PrismaService } from 'src/prisma';
-import { UserModule, UserService } from 'src/user';
+import { UserModule } from 'src/user';
+import { UserRepository } from 'src/user/user.repository';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
-import { config } from 'src/config';
 
 @Module({
   imports: [
@@ -23,9 +25,10 @@ import { config } from 'src/config';
   providers: [
     AuthService,
     LocalStrategy,
-    UserService,
+    UserRepository,
     PrismaService,
     JwtStrategy,
+    PrismaClient,
   ],
   controllers: [AuthController],
 })

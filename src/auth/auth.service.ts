@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import { compareSync } from 'bcrypt';
-import { UserService } from 'src/user';
+import { UserRepository } from 'src/user/user.repository';
 import { PayloadJWT } from './types/payload.type';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UserService,
+    private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -24,7 +24,7 @@ export class AuthService {
     email: string,
     password: string,
   ): Promise<User | null> {
-    const user = await this.userService.findUnique({
+    const user = await this.userRepository.findUnique({
       where: {
         email,
       },
