@@ -20,11 +20,8 @@ export class UserRepository implements IUserRepository {
   public async findAll(): Promise<User[]> {
     return await this.prisma.client.user.findMany();
   }
-
-  public async findFirst(
-    options: Prisma.UserFindFirstOrThrowArgs,
-  ): Promise<User | null> {
-    return await this.prisma.client.user.findFirst(options);
+  public async findByIdOrEmail(input: string): Promise<User | null> {
+    return await this.prisma.extended.user.findByIdOrEmail(input);
   }
 
   public async findUnique(
@@ -39,7 +36,7 @@ export class UserRepository implements IUserRepository {
       },
     });
   }
-  
+
   public async update(id: string, input: UpdateUserDto): Promise<User> {
     return await this.prisma.client.user.update({
       where: {

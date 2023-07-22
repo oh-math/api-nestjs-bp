@@ -28,11 +28,7 @@ export class UserService {
   }
 
   public async findByIdOrEmail(input: string): Promise<UserResponse> {
-    const plainUser = await this.userRepository.findFirst({
-      where: {
-        OR: [{ id: parseInt(input) }, { email: input }],
-      },
-    });
+    const plainUser = await this.userRepository.findByIdOrEmail(input);
 
     return plainToInstance(UserResponse, plainUser);
   }
